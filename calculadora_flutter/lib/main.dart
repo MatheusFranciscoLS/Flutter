@@ -38,8 +38,10 @@ class _CalculadoraState extends State<Calculadora> {
         resultado = numero1 - numero2;
       } else if (operacao == 'Multi') {
         resultado = numero1 * numero2;
-      } else {
+      } else if (operacao == 'Div'){
         resultado = numero2 != 0 ? numero1 / numero2 : null;
+      } else{
+        _resultado = "Digite um numero valido";
       }
       _resultado = resultado != null
           ? 'O Resultado é $resultado'
@@ -82,7 +84,7 @@ class _CalculadoraState extends State<Calculadora> {
             ),
             SizedBox(height: 10.0),
             ElevatedButton(
-              onPressed: () => _calcular('Mult'),
+              onPressed: () => _calcular('Multi'),
               child: Text('Multiplicar'),
             ),ElevatedButton(
               onPressed: () => _calcular('Div'),
