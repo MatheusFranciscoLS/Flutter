@@ -2,7 +2,9 @@ import 'package:app_carros/Model.dart';
 
 class CarroController {
   //Atributo
-  List<Carro> _carrosLista = [];
+  List<Carro> _carrosLista = [
+    Carro("Fiat Uno",1992,"caminho da imagem"),
+    Carro("Classic",2012,"caminho da imagem")];
 
   //métodos
   List<Carro> get listarCarros => _carrosLista;
