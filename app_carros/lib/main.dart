@@ -1,8 +1,7 @@
-import 'package:app_carros/View.dart';
 import 'package:flutter/material.dart';
+import 'controller.dart';
+import 'view.dart';
 import 'package:provider/provider.dart';
-
-import 'Controller.dart';
 
 void main() {
   runApp(MyApp());
