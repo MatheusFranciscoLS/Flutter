@@ -8,7 +8,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Animação',
       home: AnimatedWidgetExample(),
     );
   }
@@ -34,7 +33,7 @@ class _AnimatedWidgetExampleState extends State<AnimatedWidgetExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Animação'),
+        title: Text('Exercicio 10'),
       ),
       body: Center(
         child: GestureDetector(
