@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sa2_autenticacao_configuracao/Controller/DbHelper.dart';
+import 'package:flutter/services.dart'; // Importe o pacote de formatação de texto
+import 'package:sa2_autenticacao_configuracao/Controller/Controller.dart';
 import 'package:sa2_autenticacao_configuracao/Model/Model.dart';
 import 'package:sa2_autenticacao_configuracao/View/Cadastro.dart';
 import 'package:sa2_autenticacao_configuracao/View/Configuracoes.dart';
@@ -63,6 +64,10 @@ class _LoginFormState extends State<LoginForm> {
                 }
                 return null;
               },
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                    RegExp(r'[0-9]')), // Impede números
+              ],
             ),
             SizedBox(height: 20),
             TextFormField(

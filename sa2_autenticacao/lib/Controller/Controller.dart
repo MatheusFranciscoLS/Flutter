@@ -1,53 +1,98 @@
+import 'package:sa2_autenticacao_configuracao/Model/Model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class BancoDadosCrud {
-  static const String DB_NOME = 'contacts.db'; // Nome do banco de dados
-  static const String TABLE_NOME = 'contacts'; // Nome da tabela
+  late Database _db;
 
-  static const String
-      CREATE_CONTACTS_TABLE_SCRIPT = // Script SQL para criar a tabela
-      "CREATE TABLE IF NOT EXISTS $TABLE_NOME("
-      "email TEXT PRIMARY KEY,"
-      "nome TEXT,"
-      "senha TEXT)";
+  static final BancoDadosCrud _instance = BancoDadosCrud._internal();
+
+  factory BancoDadosCrud() {
+    return _instance;
+  }
+
+  BancoDadosCrud._internal();
 
   // Abre o banco de dados
-  Future<Database> abrirBancoDados() async {
-    return openDatabase(
-      join(await getDatabasesPath(), DB_NOME),
-      onCreate: (db, version) {
-        return db.execute(CREATE_CONTACTS_TABLE_SCRIPT);
-      },
-      version: 1,
-    );
+  Future<void> abrirBancoDados() async {
+    try {
+      _db = await openDatabase(
+        join(await getDatabasesPath(), 'usuarios_database.db'),
+        onCreate: (db, version) {
+          return db.execute(
+            'CREATE TABLE usuarios(id INTEGER PRIMARY KEY, name TEXT, email TEXT, password TEXT)',
+          );
+        },
+        version: 1,
+      );
+    } catch (e) {
+      print('Erro ao abrir o banco de dados: $e');
+    }
   }
 
   // Cadastra um novo usuário
-  Future<void> cadastrarUsuario(String nome, String email, String senha) async {
-    final db = await abrirBancoDados();
-    await db.insert(
-      TABLE_NOME,
-      {
-        'nome': nome,
-        'email': email,
-        'senha': senha,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+  Future<bool> cadastrarUsuario(User user) async {
+    try {
+      await _db.insert(
+        'usuarios',
+        user.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      return true;
+    } catch (e) {
+      print('Erro ao cadastrar usuário: $e');
+      return false;
+    }
   }
 
   // Busca um usuário pelo e-mail
-  Future<Map<String, dynamic>?> buscarUsuario(String email) async {
-    final db = await abrirBancoDados();
-    List<Map<String, dynamic>> results = await db.query(TABLE_NOME,
-        where: "email = ?", whereArgs: [email], limit: 1);
-    if (results.isNotEmpty) {
-      return results.first;
-    } else {
+  Future<User?> buscarUsuario(String email) async {
+    try {
+      List<Map<String, dynamic>> usuarios = await _db.query(
+        'usuarios',
+        where: 'email = ?',
+        whereArgs: [email],
+      );
+
+      if (usuarios.isNotEmpty) {
+        return User.fromMap(usuarios.first);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Erro ao buscar usuário: $e');
       return null;
     }
   }
-  
 
+  // Fecha o banco de dados
+  Future<void> fecharBancoDados() async {
+    try {
+      if (_db.isOpen) {
+        await _db.close();
+      }
+    } catch (e) {
+      print('Erro ao fechar o banco de dados: $e');
+    }
+  }
+
+  // Realiza o login do usuário
+  Future<User?> realizarLogin(String email, String senha) async {
+    try {
+      List<Map<String, dynamic>> usuarios = await _db.query(
+        'usuarios',
+        where: 'email = ? AND password = ?',
+        whereArgs: [email, senha],
+      );
+
+      if (usuarios.isNotEmpty) {
+        return User.fromMap(usuarios.first);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Erro ao realizar login: $e');
+      return null;
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sa2_autenticacao_configuracao/Controller/DbHelper.dart';
+import 'package:sa2_autenticacao_configuracao/Controller/Controller.dart';
 import 'package:sa2_autenticacao_configuracao/Model/Model.dart';
 
 void main() {
@@ -33,7 +33,7 @@ class _CadastroFormState extends State<CadastroForm> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _senhaController = TextEditingController();
 
-  void cadastrarUsuario() async {
+  void cadastrarUsuario(BuildContext context) async {
     String name = _nomeController.text;
     String email = _emailController.text;
     String password = _senhaController.text;
@@ -43,13 +43,25 @@ class _CadastroFormState extends State<CadastroForm> {
     BancoDadosCrud bancoDados = BancoDadosCrud();
     await bancoDados.abrirBancoDados(); // Abre o banco de dados
 
-    bool sucesso = await bancoDados.cadastrarUsuario(user);
+    try {
+      bool sucesso = await bancoDados.cadastrarUsuario(user);
 
-    if (sucesso) {
-      print('Usuário cadastrado com sucesso!');
-      Navigator.pop(context); // Redireciona para a tela de login
-    } else {
-      print('Erro ao cadastrar usuário');
+      if (sucesso) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Usuário cadastrado com sucesso!')),
+        );
+        Navigator.pop(context); // Redireciona para a tela de login
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao cadastrar usuário')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao cadastrar usuário: $e')),
+      );
+    } finally {
+      await bancoDados.fecharBancoDados(); // Fecha o banco de dados
     }
   }
 
@@ -77,6 +89,9 @@ class _CadastroFormState extends State<CadastroForm> {
                 if (value?.trim().isEmpty ?? true) {
                   return 'Por favor, insira seu nome';
                 }
+                if (!RegExp(r'^[a-zA-ZÀ-ú-\s]+$').hasMatch(value!)) {
+                  return 'Nome inválido';
+                }
                 return null;
               },
             ),
@@ -88,7 +103,9 @@ class _CadastroFormState extends State<CadastroForm> {
                 if (value?.trim().isEmpty ?? true) {
                   return 'Por favor, insira seu e-mail';
                 }
-                // Adicione validação de e-mail aqui se necessário
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+                  return 'E-mail inválido';
+                }
                 return null;
               },
             ),
@@ -101,7 +118,6 @@ class _CadastroFormState extends State<CadastroForm> {
                 if (value?.trim().isEmpty ?? true) {
                   return 'Por favor, insira sua senha';
                 }
-                // Adicione validação de senha aqui se necessário
                 return null;
               },
             ),
@@ -109,8 +125,7 @@ class _CadastroFormState extends State<CadastroForm> {
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  // Adicione a lógica para cadastrar o usuário aqui
-                  cadastrarUsuario();
+                  cadastrarUsuario(context);
                 }
               },
               child: Text('Cadastrar'),
