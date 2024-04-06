@@ -3,7 +3,6 @@
 import 'package:app_carros/controller.dart';
 import 'package:app_carros/model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TelaListaCarros extends StatelessWidget {
   final CarroController controllerCarros;

@@ -19,8 +19,7 @@ void _adicionarProduto(BuildContext context) {
     bool produtoExistente = Provider.of<MercadoController>(context, listen: false)
         .produtos
         .any((produto) => produto.descricao == descricao);
-    if (!produtoExistente) {
-      DateTime dataAtual = DateTime.now();
+    if (!produtoExistente) {;
       Provider.of<MercadoController>(context, listen: false)
           .adicionarProduto(descricao, tipo);
       _descricaoController.clear();

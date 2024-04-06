@@ -6,10 +6,16 @@ import 'package:sqflite/sqflite.dart';
 class BancoDadosCrud {
   static const String DB_NOME = 'contacts.db'; // Nome do banco de dados
   static const String TABLE_NOME = 'contacts'; // Nome da tabela
-  static const String CREATE_CONTACTS_TABLE_SCRIPT = // Script SQL para criar a tabela
+  static const String
+      CREATE_CONTACTS_TABLE_SCRIPT = // Script SQL para criar a tabela
       "CREATE TABLE IF NOT EXISTS contacts(id INTEGER PRIMARY KEY," +
           "nome TEXT, email TEXT, telefone TEXT," +
           "endereco TEXT)";
+  static const String CREATE_SETTINGS_TABLE_SCRIPT =
+      "CREATE TABLE IF NOT EXISTS configuracoes("
+      "email TEXT PRIMARY KEY,"
+      "darkMode INTEGER,"
+      "fontSize INTEGER)";
 
   Future<Database> _getDatabase() async {
     return openDatabase(
