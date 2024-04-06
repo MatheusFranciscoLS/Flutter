@@ -1,17 +1,17 @@
 import 'package:exemplo_sqlite/View.dart';
 import 'package:flutter/material.dart';
 
-void main(){
-  runApp(MyApp());
+void main() {
+  runApp(Myapp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Myapp extends StatelessWidget {
+  const Myapp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Exemplo SQLite",
+      title: "Exemplo SQLLITE",
       theme: ThemeData(
         primarySwatch: Colors.blue
       ),
