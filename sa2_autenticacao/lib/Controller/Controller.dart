@@ -5,12 +5,14 @@ class BancoDadosCrud {
   static const String DB_NOME = 'contacts.db'; // Nome do banco de dados
   static const String TABLE_NOME = 'contacts'; // Nome da tabela
 
-  static const String CREATE_CONTACTS_TABLE_SCRIPT = // Script SQL para criar a tabela
+  static const String
+      CREATE_CONTACTS_TABLE_SCRIPT = // Script SQL para criar a tabela
       "CREATE TABLE IF NOT EXISTS $TABLE_NOME("
       "email TEXT PRIMARY KEY,"
       "nome TEXT,"
       "senha TEXT)";
 
+  // Abre o banco de dados
   Future<Database> abrirBancoDados() async {
     return openDatabase(
       join(await getDatabasesPath(), DB_NOME),
@@ -21,6 +23,7 @@ class BancoDadosCrud {
     );
   }
 
+  // Cadastra um novo usuário
   Future<void> cadastrarUsuario(String nome, String email, String senha) async {
     final db = await abrirBancoDados();
     await db.insert(
@@ -34,6 +37,7 @@ class BancoDadosCrud {
     );
   }
 
+  // Busca um usuário pelo e-mail
   Future<Map<String, dynamic>?> buscarUsuario(String email) async {
     final db = await abrirBancoDados();
     List<Map<String, dynamic>> results = await db.query(TABLE_NOME,
@@ -44,4 +48,6 @@ class BancoDadosCrud {
       return null;
     }
   }
+  
+
 }

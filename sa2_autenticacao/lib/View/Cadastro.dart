@@ -74,7 +74,7 @@ class _CadastroFormState extends State<CadastroForm> {
               controller: _nomeController,
               decoration: InputDecoration(labelText: 'Nome'),
               validator: (value) {
-                if (value?.trim()?.isEmpty ?? true) {
+                if (value?.trim().isEmpty ?? true) {
                   return 'Por favor, insira seu nome';
                 }
                 return null;
@@ -85,7 +85,7 @@ class _CadastroFormState extends State<CadastroForm> {
               controller: _emailController,
               decoration: InputDecoration(labelText: 'E-mail'),
               validator: (value) {
-                if (value?.trim()?.isEmpty ?? true) {
+                if (value?.trim().isEmpty ?? true) {
                   return 'Por favor, insira seu e-mail';
                 }
                 // Adicione validação de e-mail aqui se necessário
@@ -98,7 +98,7 @@ class _CadastroFormState extends State<CadastroForm> {
               decoration: InputDecoration(labelText: 'Senha'),
               obscureText: true,
               validator: (value) {
-                if (value?.trim()?.isEmpty ?? true) {
+                if (value?.trim().isEmpty ?? true) {
                   return 'Por favor, insira sua senha';
                 }
                 // Adicione validação de senha aqui se necessário

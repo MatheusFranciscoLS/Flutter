@@ -13,6 +13,7 @@ class BancoDadosCrud {
 
   BancoDadosCrud._internal();
 
+  // Abre o banco de dados
   Future<void> abrirBancoDados() async {
     _db = await openDatabase(
       join(await getDatabasesPath(), 'usuarios_database.db'),
@@ -25,6 +26,7 @@ class BancoDadosCrud {
     );
   }
 
+  // Cadastra um novo usuário
   Future<bool> cadastrarUsuario(User user) async {
     try {
       await _db.insert(
@@ -39,6 +41,7 @@ class BancoDadosCrud {
     }
   }
 
+  // Busca um usuário pelo e-mail
   Future<User?> buscarUsuario(String email) async {
     try {
       List<Map<String, dynamic>> usuarios = await _db.query(
@@ -58,12 +61,14 @@ class BancoDadosCrud {
     }
   }
 
+  // Fecha o banco de dados
   Future<void> fecharBancoDados() async {
-    if (_db != null && _db.isOpen) {
+    if (_db.isOpen) {
       await _db.close();
     }
   }
 
+  // Realiza o login do usuário
   Future<User?> realizarLogin(String email, String senha) async {
     try {
       List<Map<String, dynamic>> usuarios = await _db.query(
