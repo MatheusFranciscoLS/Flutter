@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: Configuracoes(email: '',),
-  ));
-}
-
 class Configuracoes extends StatefulWidget {
   final String email;
 
@@ -41,10 +35,15 @@ class _ConfiguracoesState extends State<Configuracoes> {
   }
 
   Future<void> _logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('${widget.email}_darkMode');
-    await prefs.remove('${widget.email}_fontSize');
-    // Adicione qualquer outra lógica de logout aqui, como redirecionar para a tela de login
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('${widget.email}_darkMode');
+      await prefs.remove('${widget.email}_fontSize');
+      await prefs.remove('loggedInUserEmail'); // Remove o email do usuário logado
+      Navigator.pushReplacementNamed(context, '/login'); // Redireciona para a tela de login
+    } catch (e) {
+      print('Erro ao realizar logout: $e');
+    }
   }
 
   @override
@@ -84,8 +83,7 @@ class _ConfiguracoesState extends State<Configuracoes> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _logout();
-                // Adicione qualquer outra lógica de logout aqui, como redirecionar para a tela de login
+                _logout(); // Chama a função de logout
               },
               child: Text('Sair'),
             ),

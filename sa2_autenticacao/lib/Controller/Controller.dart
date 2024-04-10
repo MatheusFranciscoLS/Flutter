@@ -1,4 +1,5 @@
 import 'package:sa2_autenticacao_configuracao/Model/Model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -93,6 +94,18 @@ class BancoDadosCrud {
     } catch (e) {
       print('Erro ao realizar login: $e');
       return null;
+    }
+  }
+
+  // Realiza o logout do usuário
+  Future<void> realizarLogout(String email) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String> loggedUsers = prefs.getStringList('loggedUsers') ?? [];
+      loggedUsers.remove(email);
+      await prefs.setStringList('loggedUsers', loggedUsers);
+    } catch (e) {
+      print('Erro ao realizar logout: $e');
     }
   }
 }
