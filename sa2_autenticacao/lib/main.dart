@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sa2_autenticacao_configuracao/View/Configuracoes.dart';
 import 'package:sa2_autenticacao_configuracao/View/Login.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    initialRoute: '/configuracoes',  // Rota inicial
+    routes: {
+      '/configuracoes': (context) => Configuracoes(email: ''),
+      '/login': (context) => LoginScreen(),
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -11,10 +18,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Autenticação e Configuração',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      // Define o título da aplicação
+      title: "Autentificação e Configuração",
+      // Define o tema da aplicação, com a cor azul como primária
+      theme: ThemeData(primarySwatch: Colors.blue),
+      // Define a tela inicial da aplicação como a tela de login
       home: LoginScreen(),
     );
   }
