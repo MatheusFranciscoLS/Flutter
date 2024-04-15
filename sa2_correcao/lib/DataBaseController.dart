@@ -5,7 +5,8 @@ import 'package:sqflite/sqflite.dart';
 class BancoDadosCrud {
   static const String DB_NOME = 'users.db'; // Nome do banco de dados
   static const String TABLE_NOME = 'users'; // Nome da tabela
-  static const String SCRIPT_CRIACAO_TABELA = // Script SQL para criar a tabela
+  static const String
+      SCRIPT_CRIACAO_TABELA = // Script SQL para criar a tabela
       "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY," +
           "nome TEXT, " +
           "email TEXT, " +
@@ -38,13 +39,15 @@ class BancoDadosCrud {
   Future<User?> getUser(String email, String senha) async {
     try {
       final Database db = await _chamarBanco();
-      final List<Map<String, dynamic>> maps = await db.query(TABLE_NOME,
+      final List<Map<String, dynamic>> maps =
+          await db.query(TABLE_NOME,
           where: 'email = ? AND senha = ?',
-          whereArgs: [email, senha]); // Consulta todos os contatos na tabela
+          whereArgs: [email,senha]
+          ); // Consulta todos os contatos na tabela
 
-      if (maps.isNotEmpty) {
+      if (maps.isNotEmpty){
         return User.fromMap(maps.first);
-      } else {
+      }else{
         return null;
       }
     } catch (ex) {
@@ -56,16 +59,18 @@ class BancoDadosCrud {
   //CRIAR UM MÉTODO DO TIPO BOOL
   Future<bool> existsUser(String email, String senha) async {
     bool acessoPermitido = false;
-    try {
-      final Database db = await _chamarBanco();
-      final List<Map<String, dynamic>> maps = await db.query(TABLE_NOME,
+    try{
+    final Database db = await _chamarBanco();
+    final List<Map<String, dynamic>> maps =
+          await db.query(TABLE_NOME,
           where: 'email = ? AND senha = ?',
-          whereArgs: [email, senha]); // Consulta todos os contatos na tabela
+          whereArgs: [email,senha]
+          ); // Consulta todos os contatos na tabela
 
-      if (maps.isNotEmpty) {
+      if (maps.isNotEmpty){
         acessoPermitido = true;
         return acessoPermitido;
-      } else {
+      }else{
         return acessoPermitido;
       }
     } catch (ex) {
