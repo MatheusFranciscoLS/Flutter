@@ -66,7 +66,7 @@ class _TarefasScreenState extends State<TarefasScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Por favor, insira o título da tarefa'),
-          duration: Duration(seconds: 2),
+          duration: Duration(seconds: 1),
         ),
       );
       return;
@@ -80,7 +80,7 @@ class _TarefasScreenState extends State<TarefasScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Tarefa adicionada com sucesso!'),
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 1),
       ),
     );
   }
@@ -140,7 +140,7 @@ class _TarefasScreenState extends State<TarefasScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Logout realizado com sucesso!'),
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 1),
       ),
     );
 
