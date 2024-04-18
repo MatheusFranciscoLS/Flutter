@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../Controller/BancoDados.dart';
-import '../Model/User.dart';
+import '../Controller/BancoDados.dart'; // Importa o controlador do banco de dados
+import '../Model/User.dart'; // Importa o modelo de usuário
 
 class CadastroScreen extends StatelessWidget {
   @override
@@ -12,7 +12,7 @@ class CadastroScreen extends StatelessWidget {
         title: Text('Cadastro'),
       ),
       body: Center(
-        child: CadastroForm(),
+        child: CadastroForm(), // Mostra o formulário de cadastro
       ),
     );
   }
@@ -24,19 +24,21 @@ class CadastroForm extends StatefulWidget {
 }
 
 class _CadastroFormState extends State<CadastroForm> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>(); // Chave para o formulário
   TextEditingController _nomeController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _senhaController = TextEditingController();
   TextEditingController _confirmarSenhaController = TextEditingController();
   bool _showPassword = false;
 
+  // Função para cadastrar o usuário
   void cadastrarUsuario(BuildContext context) async {
     String name = _nomeController.text;
     String email = _emailController.text;
     String password = _senhaController.text;
     String confirmPassword = _confirmarSenhaController.text;
 
+    // Verifica se as senhas coincidem
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('As senhas não coincidem')),
@@ -46,6 +48,7 @@ class _CadastroFormState extends State<CadastroForm> {
 
     BancoDadosCrud bancoDados = BancoDadosCrud();
 
+    // Verifica se o e-mail já está cadastrado
     bool emailExists = await bancoDados.existsEmail(email);
 
     if (emailExists) {
@@ -58,11 +61,11 @@ class _CadastroFormState extends State<CadastroForm> {
     User user = User(nome: name, email: email, senha: password);
 
     try {
-      bancoDados.create(user);
+      bancoDados.create(user); // Cria o usuário no banco de dados
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Usuário cadastrado com sucesso!')),
       );
-      _formKey.currentState?.reset();
+      _formKey.currentState?.reset(); // Reseta o formulário
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro ao cadastrar usuário: $e')),
@@ -181,7 +184,7 @@ class _CadastroFormState extends State<CadastroForm> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    cadastrarUsuario(context);
+                    cadastrarUsuario(context); // Chama a função de cadastro do usuário
                   }
                 },
                 child: Text('Cadastrar'),
@@ -193,8 +196,8 @@ class _CadastroFormState extends State<CadastroForm> {
     );
   }
 
+  // Função para validar o e-mail
   bool isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 }
-

@@ -33,11 +33,13 @@ class _TarefasScreenState extends State<TarefasScreen> {
     _carregarPreferencias();
   }
 
+  // Carrega as preferências do usuário ao iniciar a tela
   Future<void> _carregarPreferencias() async {
     _prefs = await SharedPreferences.getInstance();
     _carregarTarefasDasPreferencias();
   }
 
+  // Carrega as tarefas salvas nas preferências
   void _carregarTarefasDasPreferencias() {
     List<String>? tarefas = _prefs.getStringList('${email}_tarefas');
     if (tarefas != null) {
@@ -50,6 +52,7 @@ class _TarefasScreenState extends State<TarefasScreen> {
     }
   }
 
+  // Salva as tarefas nas preferências
   void _salvarTarefasNasPreferencias() {
     List<String> tarefas = _tarefas.map((tarefa) {
       return '${tarefa.titulo},${tarefa.status}';
@@ -57,31 +60,32 @@ class _TarefasScreenState extends State<TarefasScreen> {
     _prefs.setStringList('${email}_tarefas', tarefas);
   }
 
-void _adicionarTarefa(String titulo) {
-  if (titulo.trim().isEmpty) {
+  // Adiciona uma nova tarefa à lista
+  void _adicionarTarefa(String titulo) {
+    if (titulo.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Por favor, insira o título da tarefa'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _tarefas.add(Tarefa(titulo: titulo.trim(), status: 'Em andamento'));
+      _salvarTarefasNasPreferencias();
+    });
+    _tarefaController.clear();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Por favor, insira o título da tarefa'),
+        content: Text('Tarefa adicionada com sucesso!'),
         duration: Duration(seconds: 2),
       ),
     );
-    return;
   }
 
-  setState(() {
-    _tarefas.add(Tarefa(titulo: titulo.trim(), status: 'Em andamento'));
-    _salvarTarefasNasPreferencias();
-  });
-  _tarefaController.clear();
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('Tarefa adicionada com sucesso!'),
-      duration: Duration(seconds: 2),
-    ),
-  );
-}
-
-
+  // Exclui uma tarefa da lista
   void _excluirTarefa(int indice) {
     showDialog(
       context: context,
@@ -112,6 +116,7 @@ void _adicionarTarefa(String titulo) {
     );
   }
 
+  // Atualiza o status de uma tarefa
   void _atualizarStatusTarefa(int indice, String status) {
     setState(() {
       _tarefas[indice].status = status;
@@ -119,6 +124,7 @@ void _adicionarTarefa(String titulo) {
     });
   }
 
+  // Retorna uma lista de tarefas filtradas de acordo com o status selecionado
   List<Tarefa> _tarefasFiltradas() {
     if (_statusSelecionado == 'Todas') {
       return _tarefas;
@@ -129,22 +135,21 @@ void _adicionarTarefa(String titulo) {
     }
   }
 
-void _logout() {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('Logout realizado com sucesso!'),
-      duration: Duration(seconds: 2),
-    ),
-  );
+  // Realiza o logout do usuário
+  void _logout() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Logout realizado com sucesso!'),
+        duration: Duration(seconds: 2),
+      ),
+    );
 
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) => LoginScreen(),
-    ),
-  );
-}
-
-
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

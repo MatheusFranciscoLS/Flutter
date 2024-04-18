@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../Controller/BancoDados.dart';
-import '../Model/User.dart';
-import 'CadastroScreen.dart';
-import 'TarefasScreen.dart';
+import '../Controller/BancoDados.dart'; // Importa o controlador do banco de dados
+import '../Model/User.dart'; // Importa o modelo de usuário
+import 'CadastroScreen.dart'; // Importa a tela de cadastro
+import 'TarefasScreen.dart'; // Importa a tela de tarefas
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -14,7 +14,7 @@ class LoginScreen extends StatelessWidget {
         title: Text('Login'),
       ),
       body: Center(
-        child: LoginForm(),
+        child: LoginForm(), // Mostra o formulário de login
       ),
     );
   }
@@ -26,28 +26,30 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>(); // Chave para o formulário
   TextEditingController _emailController = TextEditingController();
   TextEditingController _senhaController = TextEditingController();
-  bool _loading = false;
-  bool _showPassword = false;
+  bool _loading = false; // Variável para controlar o estado de carregamento
+  bool _showPassword = false; // Variável para mostrar/esconder a senha
 
+  // Função para realizar o login
   void _login() async {
     if (_formKey.currentState!.validate()) {
       String email = _emailController.text;
       String senha = _senhaController.text;
 
       setState(() {
-        _loading = true;
+        _loading = true; // Define o estado de carregamento como verdadeiro
       });
 
       BancoDadosCrud bancoDados = BancoDadosCrud();
       try {
         User? user = await bancoDados.getUser(email, senha);
         if (user != null) {
+          // Se o usuário existir, navega para a tela de tarefas
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Login realizado com sucesso'),
-            duration: Duration(seconds: 2),
+            duration: Duration(seconds: 1),
           ));
           Navigator.pushReplacement(
             context,
@@ -56,6 +58,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
           );
         } else {
+          // Se o usuário não existir, exibe uma mensagem de erro
           _showSnackBar('Email ou senha incorretos');
         }
       } catch (e) {
@@ -63,12 +66,13 @@ class _LoginFormState extends State<LoginForm> {
         _showSnackBar('Erro durante o login. Tente novamente mais tarde.');
       } finally {
         setState(() {
-          _loading = false;
+          _loading = false; // Define o estado de carregamento como falso
         });
       }
     }
   }
 
+  // Função para mostrar uma snackbar com uma mensagem
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
@@ -142,15 +146,17 @@ class _LoginFormState extends State<LoginForm> {
               ),
               SizedBox(height: 20),
               _loading
-                  ? CircularProgressIndicator()
+                  ? CircularProgressIndicator() // Mostra um indicador de carregamento se estiver carregando
                   : ElevatedButton(
-  onPressed: _loading ? null : _login,
-  child: _loading ? Text('Carregando...') : Text('Acessar'),
-),
-
+                      onPressed: _loading
+                          ? null
+                          : _login, // Desabilita o botão se estiver carregando
+                      child: _loading ? Text('Carregando...') : Text('Acessar'),
+                    ),
               SizedBox(height: 20),
               TextButton(
                 onPressed: () {
+                  // Navega para a tela de cadastro
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CadastroScreen()),
@@ -165,6 +171,7 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
+  // Função para validar o e-mail
   bool isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }

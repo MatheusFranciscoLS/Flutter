@@ -1,7 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../Model/User.dart';
+import '../Model/User.dart'; // Importa o modelo de usuário
 
 class BancoDadosCrud {
   static const String DB_NOME = 'users.db'; // Nome do banco de dados
@@ -13,6 +13,7 @@ class BancoDadosCrud {
           "email TEXT, " +
           "senha TEXT)";
 
+  // Método privado para chamar o banco de dados
   Future<Database> _chamarBanco() async {
     return openDatabase(
       join(await getDatabasesPath(), DB_NOME), // Caminho do banco de dados
@@ -24,31 +25,30 @@ class BancoDadosCrud {
     );
   }
 
-  // Método para criar um novo contato no banco de dados
+  // Método para criar um novo usuário no banco de dados
   Future<void> create(User user) async {
     try {
       final Database db = await _chamarBanco();
       await db.insert(
-          TABLE_NOME, user.toMap()); // Insere o contato no banco de dados
+          TABLE_NOME, user.toMap()); // Insere o usuário no banco de dados
     } catch (ex) {
       print(ex);
       return;
     }
   }
 
-  // Método para buscar o user do banco de dados
+  // Método para buscar o usuário pelo email e senha
   Future<User?> getUser(String email, String senha) async {
     try {
       final Database db = await _chamarBanco();
       final List<Map<String, dynamic>> maps =
           await db.query(TABLE_NOME,
-          where: 'email = ? AND senha = ?',
-          whereArgs: [email,senha]
-          ); // Consulta todos os contatos na tabela
+              where: 'email = ? AND senha = ?',
+              whereArgs: [email, senha]); // Consulta o usuário na tabela
 
-      if (maps.isNotEmpty){
+      if (maps.isNotEmpty) {
         return User.fromMap(maps.first);
-      }else{
+      } else {
         return null;
       }
     } catch (ex) {
@@ -57,21 +57,20 @@ class BancoDadosCrud {
     }
   }
 
-  //CRIAR UM MÉTODO DO TIPO BOOL
+  // Método para verificar se um usuário existe com o email e senha fornecidos
   Future<bool> existsUser(String email, String senha) async {
     bool acessoPermitido = false;
-    try{
-    final Database db = await _chamarBanco();
-    final List<Map<String, dynamic>> maps =
+    try {
+      final Database db = await _chamarBanco();
+      final List<Map<String, dynamic>> maps =
           await db.query(TABLE_NOME,
-          where: 'email = ? AND senha = ?',
-          whereArgs: [email,senha]
-          ); // Consulta todos os contatos na tabela
+              where: 'email = ? AND senha = ?',
+              whereArgs: [email, senha]); // Consulta o usuário na tabela
 
-      if (maps.isNotEmpty){
+      if (maps.isNotEmpty) {
         acessoPermitido = true;
         return acessoPermitido;
-      }else{
+      } else {
         return acessoPermitido;
       }
     } catch (ex) {
@@ -81,21 +80,20 @@ class BancoDadosCrud {
   }
 
   // Método para verificar se um email já está cadastrado no banco de dados
-Future<bool> existsEmail(String email) async {
-  try {
-    final Database db = await _chamarBanco();
-    final List<Map<String, dynamic>> maps = await db.query(
-      TABLE_NOME,
-      columns: ['id'],
-      where: 'email = ?',
-      whereArgs: [email],
-    ); // Consulta se o email já está cadastrado
+  Future<bool> existsEmail(String email) async {
+    try {
+      final Database db = await _chamarBanco();
+      final List<Map<String, dynamic>> maps = await db.query(
+        TABLE_NOME,
+        columns: ['id'],
+        where: 'email = ?',
+        whereArgs: [email],
+      ); // Consulta se o email já está cadastrado
 
-    return maps.isNotEmpty; // Retorna true se o email já existe, caso contrário retorna false
-  } catch (ex) {
-    print(ex);
-    return false;
+      return maps.isNotEmpty; // Retorna true se o email já existe, caso contrário retorna false
+    } catch (ex) {
+      print(ex);
+      return false;
+    }
   }
-}
-
 }
