@@ -65,7 +65,7 @@ class _CadastroFormState extends State<CadastroForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Usuário cadastrado com sucesso!')),
       );
-      _formKey.currentState?.reset(); // Reseta o formulário
+      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro ao cadastrar usuário: $e')),
@@ -184,7 +184,8 @@ class _CadastroFormState extends State<CadastroForm> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    cadastrarUsuario(context); // Chama a função de cadastro do usuário
+                    cadastrarUsuario(
+                        context); // Chama a função de cadastro do usuário
                   }
                 },
                 child: Text('Cadastrar'),
