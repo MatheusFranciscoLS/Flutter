@@ -1,0 +1,18 @@
+- model livros {titulo do livros
+                autor do livros
+                Sinopse do livros
+                categoria do livros
+
+}
+
+- controller {
+    LivroController
+    - LoadLivros (Json)
+    - add novos livros
+}
+
+- view {
+    Lista de livros( listar todos os livros do catálogo)
+    onTap(livros) => info
+    info do livro (carregar todas as informações do livro)
+}

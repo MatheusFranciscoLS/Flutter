@@ -4,20 +4,40 @@
         "autor": "Isaac Asimov",
         "sinopse": "O Fim da Eternidade é um livro de ficção científica escrito por Isaac Asimov, publicado em 1985.",
         "categoria": "Ficção Científica",
-        "isbn": 9788521603065
+        "isbn": 9788521603065,
+        "capa":"assets/img/img01.jpg"
     },
     {
         "titulo": "O Morro dos Ventos Uivantes",
         "autor": "Emily Bronte",
         "sinopse": "O Morro dos Ventos Uivantes é um livro de ficção escrito por",
         "categoria": "Terror",
-        "isbn": 9788521644445
+        "isbn": 9788521644445,
+        "capa":"assets/img/img02.jpg"
     },
     {
-        "titulo": "Mémorias Póstuma de Brás Cubas",
+        "titulo": "Mémorias Póstumas de Brás Cubas",
         "autor": "Machado de Assis",
-        "sinopse": "Mémorias Póstuma de Brás Cubas é um livro de ficção escrito por Machado de Assis.",
+        "sinopse": "Mémorias Póstumas de Brás Cubas é um livro de ficção escrito por Machado de Assis.",
         "categoria": "Romance Realista",
-        "isbn": 9788521603067
+        "isbn": 9788521603067,
+        "capa":"assets/img/img03.jpg"
+    },
+    {
+        "titulo": "O Senhor dos Anéis",
+        "autor": "JKTolkin",
+        "sinopse": "O Senhor dos Anéis é um livro de ficção científica escrito por",
+        "categoria": "Ficção Científica",
+        "isbn": 9788521603065,
+        "capa":"assets/img/img03.jpg"
+    }
+    ,
+    {
+        "titulo": "CEM  Anos de Solidão",
+        "autor": "Gabriel Garcia Marques",
+        "sinopse": "O Senhor dos Anéis é um livro de ficção científica escrito por",
+        "categoria": "Ficção Científica",
+        "isbn": 9788521603065,
+        "capa":"assets/img/img03.jpg"
     }
 ]

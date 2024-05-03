@@ -1,16 +1,15 @@
 - Model 
-    Livros(     Titulo dos Livros
-                Autor dos Livros
-                Sinopse dos Livros
-                Categoria dos Livros
-                ISBN dos Livros)
-
-- Controller
+    Livros(  Titulo do Livros
+                Autor do Livros
+                Sinopse do Livros
+                Categoria do Livros
+                ISBN do Livros)
+- Controller 
     LivroController
-        -loadLivros(JSon)
-        -adicionar novos Livros
+        -loadLivros(Json)
+        -adicionar Novos Livros
 
 - View
-    Lista de Livros (Listar todos os catálogo)
-        onTap(Livros) => Info do Livro
-    Infoo do livro ( Carregar todas as informações do livro )
+    1 - Lista de Livros (Listar todos os Livros do Catálogo)
+            onTap(Livros) => info
+    2 - Info do Livro ( Carregar todas as Informações do Livro)

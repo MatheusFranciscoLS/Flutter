@@ -31,14 +31,15 @@ class _LivrosPageState extends State<LivrosPage> {
                         itemCount: controller.livros.length,
                         itemBuilder: (context, index) {
                           return ListTile(
+                            leading: Image.asset(controller.livros[index].capa),
                             title: Text(controller.livros[index].titulo),
                             subtitle: Text(controller.livros[index].autor),
                             onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        //nome da pagina
-                                        LivroInfoPage(info:controller.livros[index]))),
+                                  builder: (context) => LivroInfoPage(
+                                      info: controller.livros[index]),
+                                )),
                           );
                         });
                   }
