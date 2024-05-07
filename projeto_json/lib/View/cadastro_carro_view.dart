@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projeto_json/Controller/carros_controller.dart';
+
+import '../Model/carros_model.dart';
 
 class CarroCadastroScreen extends StatefulWidget {
   const CarroCadastroScreen({super.key});
@@ -14,11 +17,11 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _placaController = TextEditingController();
   TextEditingController _modeloController = TextEditingController();
+  TextEditingController _marcaController = TextEditingController();
   TextEditingController _anoController = TextEditingController();
   TextEditingController _corController = TextEditingController();
   TextEditingController _descricaoController = TextEditingController();
   TextEditingController _valorController = TextEditingController();
-  TextEditingController _marcaController = TextEditingController();
   File? _imagemSelecionada;
 
   @override
@@ -155,7 +158,46 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
     }
   }
 
-    void _cadastrarCarro() {
-      //cadastrar
+  Carro criarObjeto() {
+    return Carro(
+      placa: _placaController.text,
+      modelo: _modeloController.text,
+      marca: _marcaController.text,
+      ano: int.parse(_anoController.text),
+      cor: _corController.text,
+      descricao: _descricaoController.text,
+      valor: double.parse(_valorController.text),
+      foto: _imagemSelecionada!.path,
+    );
+  }
+
+  CarrosController _controller = new CarrosController();
+
+  void _limparValores() {
+    _placaController.clear();
+    _modeloController.clear();
+    _marcaController.clear();
+    _anoController.clear();
+    _corController.clear();
+    _descricaoController.clear();
+    _valorController.clear();
+    _imagemSelecionada = null;
+    setState(() {});
+  }
+
+
+  void _cadastrarCarro() {
+    //verificação
+
+    //cadastro
+    _controller.addCarro(criarObjeto());
+    //limpar os campos
+    _limparValores();
+    //SnakeBar
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Carro Cadastrado com Sucesso"),
+      ),
+    );
   }
 }
