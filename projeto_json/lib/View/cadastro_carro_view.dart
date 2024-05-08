@@ -1,10 +1,10 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projeto_json/Controller/carros_controller.dart';
-
-import '../Model/carros_model.dart';
+import 'package:projeto_json/Model/carros_model.dart';
 
 class CarroCadastroScreen extends StatefulWidget {
   const CarroCadastroScreen({super.key});
@@ -22,6 +22,7 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
   TextEditingController _corController = TextEditingController();
   TextEditingController _descricaoController = TextEditingController();
   TextEditingController _valorController = TextEditingController();
+
   File? _imagemSelecionada;
 
   CarrosController _controller = CarrosController();
@@ -30,7 +31,6 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
   void initState() {
     _controller.loadCarrosFromFile();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
                     decoration: const InputDecoration(labelText: 'Modelo'),
                     validator: (value) {
                       if (value!.trim().isEmpty) {
-                        return 'Modelo Não Pode Ser Vazio';
+                        return 'Modelo Não Pode Ser Vazia';
                       } else {
                         return null;
                       }
@@ -74,7 +74,7 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
                     decoration: const InputDecoration(labelText: 'Marca'),
                     validator: (value) {
                       if (value!.trim().isEmpty) {
-                        return 'Marca Não Pode Ser Vazio';
+                        return 'Marca Não Pode Ser Vazia';
                       } else {
                         return null;
                       }
@@ -85,7 +85,7 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
                     decoration: const InputDecoration(labelText: 'Ano'),
                     validator: (value) {
                       if (value!.trim().isEmpty) {
-                        return 'Ano Não Pode Ser Vazio';
+                        return 'Ano Não Pode Ser Vazia';
                       } else {
                         return null;
                       }
@@ -96,7 +96,7 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
                     decoration: const InputDecoration(labelText: 'Cor'),
                     validator: (value) {
                       if (value!.trim().isEmpty) {
-                        return 'Cor Não Pode Ser Vazio';
+                        return 'Cor Não Pode Ser Vazia';
                       } else {
                         return null;
                       }
@@ -104,10 +104,10 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
                   ),
                   TextFormField(
                     controller: _descricaoController,
-                    decoration: const InputDecoration(labelText: 'Descrição'),
+                    decoration: const InputDecoration(labelText: 'Descricao'),
                     validator: (value) {
                       if (value!.trim().isEmpty) {
-                        return 'Descrição Não Pode Ser Vazio';
+                        return 'Descricao Não Pode Ser Vazia';
                       } else {
                         return null;
                       }
@@ -118,7 +118,7 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
                     decoration: const InputDecoration(labelText: 'Valor'),
                     validator: (value) {
                       if (value!.trim().isEmpty) {
-                        return 'Valor Não Pode Ser Vazio';
+                        return 'Valor Não Pode Ser Vazia';
                       } else {
                         return null;
                       }
@@ -168,16 +168,16 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
 
   Carro criarObjeto() {
     return Carro(
-      placa: _placaController.text,
-      modelo: _modeloController.text,
-      marca: _marcaController.text,
-      ano: int.parse(_anoController.text),
-      cor: _corController.text,
-      descricao: _descricaoController.text,
-      valor: double.parse(_valorController.text),
-      foto: _imagemSelecionada!.path,
-    );
+        placa: _placaController.text,
+        modelo: _modeloController.text,
+        marca: _marcaController.text,
+        ano: int.parse(_anoController.text),
+        cor: _corController.text,
+        descricao: _descricaoController.text,
+        foto: _imagemSelecionada!.path,
+        valor: double.parse(_valorController.text));
   }
+
 
   void _limparValores() {
     _placaController.clear();
@@ -191,17 +191,15 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
     setState(() {});
   }
 
-
   void _cadastrarCarro() {
-    //verificação
-
+    // verificação
     //cadastro
     _controller.addCarro(criarObjeto());
     //salvar
     _controller.saveCarrosToFile();
     //limpar os campos
     _limparValores();
-    //SnakeBar
+    //SnackBar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Carro Cadastrado com Sucesso"),

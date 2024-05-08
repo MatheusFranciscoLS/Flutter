@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:path_provider/path_provider.dart';
 
 import '../Model/carros_model.dart';
 
 class CarrosController {
-  List<Carro> _carroList = [];
+  List<Carro> carroList = [];
 
-  List<Carro> get carroList {
-    return _carroList;
-  }
+  
 
   void addCarro(Carro carro) {
     carroList.add(carro);
@@ -20,7 +19,7 @@ class CarrosController {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String path = appDocDir.path;
     final file = File('$path/carros.json');
-    final jsonList = _carroList.map((carro) => carro.toJson()).toList();
+    final jsonList = carroList.map((carro) => carro.toJson()).toList();
     await file.writeAsString(jsonEncode(jsonList));
   }
 
@@ -31,9 +30,9 @@ class CarrosController {
       String path = appDocDir.path;
       final file = File('$path/carros.json');
       final jsonList = jsonDecode(await file.readAsString());
-      _carroList = jsonList.map<Carro>((json) => Carro.fromJson(json)).toList();
+      carroList = jsonList.map<Carro>((json) => Carro.fromJson(json)).toList();
     } catch (e) {
-      _carroList = [];
+      carroList = [];
     }
   }
 }
