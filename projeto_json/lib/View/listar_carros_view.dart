@@ -40,7 +40,7 @@ class _CarrosListarScreenState extends State<CarrosListarScreen> {
                           );
                         },
                       );
-                    } 
+                    }
                   }),
             )));
   }

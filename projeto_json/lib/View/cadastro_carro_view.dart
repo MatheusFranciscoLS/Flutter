@@ -24,6 +24,14 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
   TextEditingController _valorController = TextEditingController();
   File? _imagemSelecionada;
 
+  CarrosController _controller = CarrosController();
+
+  @override
+  void initState() {
+    _controller.loadCarrosFromFile();
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,8 +179,6 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
     );
   }
 
-  CarrosController _controller = new CarrosController();
-
   void _limparValores() {
     _placaController.clear();
     _modeloController.clear();
@@ -191,6 +197,8 @@ class _CarroCadastroScreenState extends State<CarroCadastroScreen> {
 
     //cadastro
     _controller.addCarro(criarObjeto());
+    //salvar
+    _controller.saveCarrosToFile();
     //limpar os campos
     _limparValores();
     //SnakeBar

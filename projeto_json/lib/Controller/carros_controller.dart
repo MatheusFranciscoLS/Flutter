@@ -12,8 +12,7 @@ class CarrosController {
   }
 
   void addCarro(Carro carro) {
-    _carroList.add(carro);
-    saveCarrosToFile();
+    carroList.add(carro);
   }
 
   //Salva para o Json
