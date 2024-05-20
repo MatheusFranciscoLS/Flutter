@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'service.dart';
 
 class WeatherScreen extends StatefulWidget {
@@ -35,6 +36,45 @@ class _WeatherScreenState extends State<WeatherScreen> {
     }
   }
 
+  Future<void> _fetchWeatherLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      final weatherData = await _weatherService.getWeatherByLocation(
+          position.latitude, position.longitude);
+      setState(() {
+        _weatherData = weatherData;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  String _translateDescription(String description) {
+    switch (description.toLowerCase()) {
+      case 'clear sky':
+        return 'céu limpo';
+      case 'few clouds':
+        return 'poucas nuvens';
+      case 'scattered clouds':
+        return 'nuvens esparsas';
+      case 'broken clouds':
+        return 'céu nublado';
+      case 'shower rain':
+        return 'chuva de banho';
+      case 'rain':
+        return 'chuva';
+      case 'thunderstorm':
+        return 'trovoada';
+      case 'snow':
+        return 'neve';
+      case 'mist':
+        return 'névoa';
+      default:
+        return description;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,50 +83,30 @@ class _WeatherScreenState extends State<WeatherScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: Center(
-          child: Form(
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: _cityController,
-                  decoration: InputDecoration(
-                    labelText: "Digite o nome da cidade",
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return "Insira o nome da cidade";
-                    }
-                    return null;
-                  },
+        child: FutureBuilder(
+          future: _fetchWeatherLocation(),
+          builder: (context, snapshot) {
+            if (_weatherData.isEmpty) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Cidade: ${_weatherData['name']}',
+                    ),
+                    Text(
+                      'Temperatura: ${(_weatherData['main']['temp'] - 273.15).toInt()} °C',
+                    ),
+                    Text(
+                      'Descrição: ${_translateDescription(_weatherData['weather'][0]['description'])}',
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _fetchWeatherData(_cityController.text);
-                  },
-                  child: Text("Buscar"),
-                ),
-                SizedBox(height: 20),
-                if (_weatherData.isNotEmpty)
-                  Column(
-                    children: [
-                      Text(
-                        'City: ${_weatherData['name']}',
-                      ),
-                      Text(
-                        'Temperature: ${(_weatherData['main']['temp'] - 273).toStringAsFixed(2)} °C',
-                      ),
-                      Text(
-                        'Description: ${_weatherData['weather'][0]['description']}',
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-          ),
+              );
+            }
+          },
         ),
       ),
     );
