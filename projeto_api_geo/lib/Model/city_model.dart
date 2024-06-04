@@ -1,10 +1,11 @@
 class City {
   //atributos
   final String cityName;
-  final bool favoriteCities;
+  final int favoriteCities;
   //cosntrutor
   City({required this.cityName, required this.favoriteCities});
   //metodos
+  
   //toMap
   Map<String,dynamic> toMap() {
     return {

@@ -50,8 +50,6 @@ class _DetailsWeatherScreenState extends State<DetailsWeatherScreen> {
                                     icon: const Icon(Icons.favorite),
                                     onPressed: () {
                                       //criar método para favoritar
-                                      City cidade = City(cityName:widget.city,favoriteCities:true);
-                                      _dbService.updateCity(cidade);
                                     },
                                   )
                                 ],

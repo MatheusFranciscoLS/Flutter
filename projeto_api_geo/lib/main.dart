@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_api_geo/View/search_screen.dart';
 
 
+import 'View/details_weather_screen.dart';
 import 'View/home_screen.dart';
 
 void main() {
