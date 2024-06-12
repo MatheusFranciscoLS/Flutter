@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       //formulario de registro
-      body:Padding(padding: const EdgeInsets.all(8),
+      body:Padding(padding: EdgeInsets.all(8),
       child: Center(
         child: Form(
           key: _formKey,
@@ -34,7 +34,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'E-mail',),
-                validator: (value) {},),
+                validator: (value) {
+                  if(value!.isEmpty){
+                    return 'Insira um e-mail';
+                  }
+                    return null;
+                },),
                 TextFormField(
                 controller: _passwordController,
                 decoration: const InputDecoration(
@@ -48,20 +53,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 20,),
                 ElevatedButton(
                   onPressed: (){ _registrarUser();},
-                  child: const Text('Registrar'),
+                  child: Text('Registrar'),
                 )]
           )),
       ),)
     );
   }
   
-  Future<User?> _registrarUser() async {
+  Future<void> _registrarUser() async {
     if(_formKey.currentState!.validate()){
       if(_passwordController.text==_confirmedPasswordController.text){
-        return await _service.registerUsuario(
+        await _service.registerUsuario(
           _emailController.text, 
           _confirmedPasswordController.text);
           //navegação para págian interna
+        Navigator.pushNamed(context, '/login');
       }else{
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -70,9 +76,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
         _passwordController.clear();
         _confirmedPasswordController.clear();
-        return null;
+        
       }
     }
-    return null;
   }
 }

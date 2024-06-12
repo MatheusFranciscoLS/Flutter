@@ -41,5 +41,19 @@
       "codigo": "a4",
       "preco": 300
     }
+  ],
+  "audios":[
+    {
+      "id":"1",
+      "title":"The St. Louis Blues",
+      "artist":"W. C. Handy",
+      "url":"http://www.dominiopublico.gov.br/download/som/gu10249.mp3"
+    },
+    {
+      "id":"1",
+      "title":"New York Blues",
+      "artist":"Pietro Frosini",
+      "url":"http://www.dominiopublico.gov.br/download/som/gu10287.mp3"
+    }
   ]
 }
