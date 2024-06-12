@@ -70,10 +70,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               _isPlaying ? 'Reproduzindo' : 'Pausado',
               style: TextStyle(fontSize: 20),
             ),
-           IconButton(              icon: Icon(Icons.skip_next),
-              iconSize: 64.0,
-              onPressed: _nextSong();
-           ),
           ],
         ),
       ),
