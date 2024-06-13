@@ -1,9 +1,8 @@
 import 'package:exemplo_firebase/screens/todolist_screen.dart';
 import 'package:exemplo_firebase/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'register_screen.dart';  // Importa a tela de cadastro
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,11 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     TextFormField(
                         controller: _emailController,
-                        decoration: InputDecoration(hintText: 'Email'),
+                        decoration: const InputDecoration(hintText: 'Email'),
                         validator: (value) {}),
                     TextFormField(
                         controller: _passwordController,
-                        decoration: InputDecoration(hintText: 'Senha'),
+                        decoration: const InputDecoration(hintText: 'Senha'),
                         validator: (value) {}),
                     const SizedBox(
                       height: 20,
@@ -44,7 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           _acessarTodoList();
                         },
-                        child: const Text("Login"))
+                        child: const Text("Login")),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen()));  // Navega para a tela de cadastro
+                        },
+                        child: const Text("Cadastrar"))
                   ]))),
     ));
   }
@@ -53,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       return await _auth.loginUsuario(
           _emailController.text, _passwordController.text);
-    }else{
+    } else {
       return null;
     }
   }
@@ -64,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print("ok");
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => TodolistScreen(user: user)));
-    }else{
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Usuário ou senha inválidos"),

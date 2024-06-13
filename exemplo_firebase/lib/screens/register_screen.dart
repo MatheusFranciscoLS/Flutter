@@ -1,9 +1,7 @@
 import 'package:exemplo_firebase/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'todolist_screen.dart'; // Importa a DashboardScreen
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,59 +14,149 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final AuthService _service = AuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmedPasswordController = TextEditingController();
+  final TextEditingController _confirmedPasswordController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //formulario de registro
-      body:Padding(padding: EdgeInsets.all(8),
-      child: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'E-mail',),
-                validator: (value) {
-                  if(value!.isEmpty){
-                    return 'Insira um e-mail';
-                  }
-                    return null;
-                },),
-                TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Senha',),
-                validator: (value) {},),
-                TextFormField(
-                controller: _confirmedPasswordController,
-                decoration: const InputDecoration(
-                  labelText: 'Confirmar Senha',),
-                validator: (value) {},),
-                const SizedBox(height: 20,),
-                ElevatedButton(
-                  onPressed: (){ _registrarUser();},
-                  child: Text('Registrar'),
-                )]
-          )),
-      ),)
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.lightBlueAccent],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text(
+                    'Registro',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira um e-mail';
+                      }
+                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                        return 'Por favor, insira um e-mail válido';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      hintText: 'Senha',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira uma senha';
+                      }
+                      if (value.length < 6) {
+                        return 'A senha deve ter pelo menos 6 caracteres';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _confirmedPasswordController,
+                    decoration: InputDecoration(
+                      hintText: 'Confirmar Senha',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, confirme a senha';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'As senhas não conferem';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.blueAccent,
+                      backgroundColor: Colors.white,
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: _registrarUser,
+                    child: const Text(
+                      'Registrar',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
-  
+
   Future<void> _registrarUser() async {
-    if(_formKey.currentState!.validate()){
-      if(_passwordController.text==_confirmedPasswordController.text){
+    if (_formKey.currentState!.validate()) {
+      if (_passwordController.text == _confirmedPasswordController.text) {
+       
         await _service.registerUsuario(
-          _emailController.text, 
+              _emailController.text, 
           _confirmedPasswordController.text);
-          //navegação para págian interna
         Navigator.pushNamed(context, '/login');
-      }else{
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('As senhas não conferem!'),
@@ -76,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
         _passwordController.clear();
         _confirmedPasswordController.clear();
-        
+       
       }
     }
   }

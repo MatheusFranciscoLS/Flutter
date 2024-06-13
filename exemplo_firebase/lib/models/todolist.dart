@@ -1,27 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Todolist {
-  //atributos
-  final String id;
-  final String titulo;
-  final String userId;
-  final DateTime timestamp;
+  String id;
+  String titulo;
+  String userId;
+  Timestamp timestamp;
 
-  Todolist({required this.id, required this.titulo, required this.userId, required this.timestamp});
+  Todolist({
+    required this.id,
+    required this.titulo,
+    required this.userId,
+    required this.timestamp,
+  });
 
-  // toMap
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'titulo': titulo,
-      'userid': userId,
-      'timestamp': timestamp
+      'userId': userId,
+      'timestamp': timestamp,
     };
   }
-  // fromMap
+
+  // Método fromMap que utiliza o ID do documento
   factory Todolist.fromMap(Map<String, dynamic> map) {
     return Todolist(
       id: map['id'],
       titulo: map['titulo'],
-      userId: map['userid'],
+      userId: map['userId'],
       timestamp: map['timestamp'],
     );
   }
