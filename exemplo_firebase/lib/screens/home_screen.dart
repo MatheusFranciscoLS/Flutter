@@ -13,7 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       // Definir uma cor de fundo ou uma imagem de fundo
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Color.fromARGB(220, 168, 255, 68), Colors.lightBlueAccent],
             begin: Alignment.topCenter,
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.blueAccent, backgroundColor: Colors.white, // Cor do texto do botão
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.blueAccent, backgroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),

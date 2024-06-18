@@ -1,48 +1,33 @@
-// details_weather_screen.dart
-
 import 'package:flutter/material.dart';
-import '../Controller/weather_controller.dart';
-import '../Model/weather_model.dart';
-import '../Service/city_db_service.dart';
+import 'package:projeto_api_geo/Controller/weather_controller.dart';
+import 'package:projeto_api_geo/Service/city_db_service.dart';
 import '../Model/city_model.dart';
 
 class DetailsWeatherScreen extends StatefulWidget {
   final String city;
-
   const DetailsWeatherScreen({Key? key, required this.city}) : super(key: key);
 
   @override
-  _DetailsWeatherScreenState createState() => _DetailsWeatherScreenState();
+  State<DetailsWeatherScreen> createState() => _DetailsWeatherScreenState();
 }
 
 class _DetailsWeatherScreenState extends State<DetailsWeatherScreen> {
   final WeatherController _controller = WeatherController();
   final CityDataBaseService _dbService = CityDataBaseService();
-  bool _isFavorite = false;
+
+  bool isHistory = false;
 
   @override
   void initState() {
     super.initState();
-    _checkIfFavorite();
+    checkIfHistory();
   }
 
-  Future<void> _checkIfFavorite() async {
-    bool isFavorite = await _dbService.isCityFavorite(widget.city);
+  Future<void> checkIfHistory() async {
+    List<City> cities = await _dbService.getAllCities();
     setState(() {
-      _isFavorite = isFavorite;
+      isHistory = cities.any((city) => city.cityName == widget.city && city.historyCities);
     });
-  }
-
-  Future<void> _toggleFavorite() async {
-    setState(() {
-      _isFavorite = !_isFavorite;
-    });
-
-    if (_isFavorite) {
-      await _dbService.insertCity(City(cityName: widget.city, favoriteCities: 1));
-    } else {
-      await _dbService.deleteCity(widget.city);
-    }
   }
 
   @override
@@ -54,35 +39,37 @@ class _DetailsWeatherScreenState extends State<DetailsWeatherScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Center(
-          child: FutureBuilder<Weather>(
+          child: FutureBuilder(
             future: _controller.getWeather(widget.city),
-            builder: (context, AsyncSnapshot<Weather> snapshot) {
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Erro: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return const Text('Dados não encontrados');
               } else {
-                var weatherData = snapshot.data!;
+                final weather = _controller.weatherList.last;
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(weatherData.name),
+                        Text(weather.name),
                         IconButton(
-                          icon: _isFavorite
-                              ? const Icon(Icons.favorite)
-                              : const Icon(Icons.favorite_border),
-                          onPressed: _toggleFavorite,
+                          icon: isHistory ? const Icon(Icons.history) : const Icon(Icons.favorite_border),
+                          onPressed: () async {
+                            setState(() {
+                              isHistory = !isHistory;
+                            });
+                            City cidade = City(cityName: widget.city, historyCities: isHistory);
+                            await _dbService.updateCity(cidade);
+                          },
                         ),
                       ],
                     ),
-                    Text(weatherData.main),
-                    Text(weatherData.description),
-                    Text('${(weatherData.temp - 273.15).toStringAsFixed(2)}°C'),
+                    Text(_controller.translateMain(weather.main)),
+                    Text(_controller.translateDescription(weather.description)),  // Aqui chamamos o método de tradução
+                    Text((weather.temp - 273).toStringAsFixed(2)),
                   ],
                 );
               }

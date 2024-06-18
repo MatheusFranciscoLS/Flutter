@@ -1,55 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_api_geo/Service/city_db_service.dart';
+import 'package:projeto_api_geo/View/details_weather_screen.dart';
+
 import '../Model/city_model.dart';
-import 'details_weather_screen.dart'; // Importe o modelo de City
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
 
   @override
-  _FavoritesScreenState createState() => _FavoritesScreenState();
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
   final CityDataBaseService _dbService = CityDataBaseService();
-  List<City> _favoriteCities = [];
+
+  late List<City> _favoriteCities;
 
   @override
   void initState() {
     super.initState();
-    _getFavoriteCities();
+    _loadFavoriteCities();
   }
 
-  Future<void> _getFavoriteCities() async {
-    List<Map<String, dynamic>> citiesData = await _dbService.getAllCities();
-    List<City> favorites = [];
-
-    for (var cityData in citiesData) {
-      if (cityData['favoriteCities'] == 1) {
-        favorites.add(City.fromMap(cityData)); // Convertendo Map para City usando City.fromMap
-      }
-    }
-
+  Future<void> _loadFavoriteCities() async {
+    List<City> cities = await _dbService.getAllCities();
     setState(() {
-      _favoriteCities = favorites;
+      _favoriteCities = cities.where((city) => city.historyCities).toList();
     });
+  }
+
+  Future<void> _removeFromFavorites(String cityName) async {
+    await _dbService.historyCity(cityName, false);
+    await _loadFavoriteCities();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cidades Favoritas"),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
+        title: const Text('Cidades Favoritas'),
       ),
       body: _favoriteCities.isEmpty
-          ? Center(
-              child: Text(
-                "Nenhuma cidade favorita encontrada.",
-                style: TextStyle(fontSize: 18),
-              ),
-            )
+          ? const Center(child: Text('Nenhuma cidade favorita'))
           : ListView.builder(
               itemCount: _favoriteCities.length,
               itemBuilder: (context, index) {
@@ -57,15 +49,19 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 return ListTile(
                   title: Text(city.cityName),
                   onTap: () {
-                    // Implemente ação ao clicar em uma cidade favorita, se necessário
-                    // Por exemplo, navegar para a tela de detalhes usando Navigator
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailsWeatherScreen(city: city.cityName),
+                        builder: (BuildContext context) => DetailsWeatherScreen(city: city.cityName),
                       ),
                     );
                   },
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      _removeFromFavorites(city.cityName);
+                    },
+                  ),
                 );
               },
             ),

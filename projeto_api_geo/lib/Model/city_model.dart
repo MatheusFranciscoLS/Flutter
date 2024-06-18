@@ -1,22 +1,22 @@
-// city_model.dart
-
 class City {
+  //atributos
   final String cityName;
-  final int favoriteCities;
-
-  City({required this.cityName, required this.favoriteCities});
-
+  final bool historyCities;
+  //construtor
+  City({required this.cityName, required this.historyCities});
+  // Métodos
+  // toMap
   Map<String, dynamic> toMap() {
     return {
       'cityname': cityName,
-      'favoritecities': favoriteCities,
+      'historycities': historyCities,
     };
   }
-
+   // fromMap
   factory City.fromMap(Map<String, dynamic> map) {
     return City(
       cityName: map['cityname'],
-      favoriteCities: map['favoritecities'],
+      historyCities: map['historycities'],
     );
   }
 }

@@ -22,7 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.blueAccent, Colors.lightBlueAccent],
             begin: Alignment.topCenter,
@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text(
+                  Text(
                     'Registro',
                     style: TextStyle(
                       fontSize: 36,
@@ -57,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderSide: BorderSide.none,
                       ),
                       contentPadding:
-                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderSide: BorderSide.none,
                       ),
                       contentPadding:
-                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                     ),
                     obscureText: true,
                     validator: (value) {
@@ -106,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderSide: BorderSide.none,
                       ),
                       contentPadding:
-                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                     ),
                     obscureText: true,
                     validator: (value) {
@@ -125,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       foregroundColor: Colors.blueAccent,
                       backgroundColor: Colors.white,
                       padding:
-                          const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -158,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Navigator.pushNamed(context, '/login');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('As senhas não conferem!'),
           ),
         );

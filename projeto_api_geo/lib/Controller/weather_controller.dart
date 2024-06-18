@@ -7,35 +7,81 @@ class WeatherController {
 
   List<Weather> get weatherList => _weatherList;
 
-  Future<Weather> getWeather(String city) async {
+  Future<void> getWeather(String city) async {
     try {
       Weather weather = Weather.fromJson(await _service.getWeather(city));
-      _weatherList.add(weather);
-      return weather;
+      weatherList.add(weather);
     } catch (e) {
       print(e);
-      throw Exception('Failed to fetch weather data');
     }
   }
 
-  Future<void> getWeatherbyLocation(double lat, double lon) async {
+  Future<void> getWeatherByLocation(double lat, double lon) async {
     try {
       Weather weather = Weather.fromJson(await _service.getWeatherByLocation(lat, lon));
-      _weatherList.add(weather);
+      weatherList.add(weather);
     } catch (e) {
       print(e);
-      throw Exception('Failed to fetch weather data');
     }
   }
 
   Future<bool> findCity(String city) async {
     try {
       Weather weather = Weather.fromJson(await _service.getWeather(city));
-      _weatherList.add(weather);
+      weatherList.add(weather);
       return true;
     } catch (e) {
       print(e);
       return false;
     }
   }
+String translateMain(String main) {
+  switch (main.toLowerCase()) {
+    case 'clear':
+      return 'limpo';
+    case 'clouds':
+      return 'nublado';
+    case 'rain':
+      return 'chuva';
+    case 'drizzle':
+      return 'chuvisco';
+    case 'thunderstorm':
+      return 'trovoada';
+    case 'snow':
+      return 'neve';
+    case 'mist':
+      return 'névoa';
+    default:
+      return main;
+  }
 }
+
+
+
+  String translateDescription(String description) {
+    switch (description.toLowerCase()) {
+      case 'clear sky':
+        return 'céu limpo';
+      case 'few clouds':
+        return 'poucas nuvens';
+      case 'scattered clouds':
+        return 'nuvens esparsas';
+      case 'broken clouds':
+        return 'céu nublado';
+      case 'shower rain':
+        return 'chuvisco';
+      case 'rain':
+        return 'chuva';
+      case 'thunderstorm':
+        return 'trovoada';
+      case 'snow':
+        return 'neve';
+      case 'mist':
+        return 'névoa';
+      default:
+        return description;
+    }
+  }
+}
+
+

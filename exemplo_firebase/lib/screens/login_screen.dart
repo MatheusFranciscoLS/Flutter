@@ -30,11 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     TextFormField(
                         controller: _emailController,
-                        decoration: const InputDecoration(hintText: 'Email'),
+                        decoration: InputDecoration(hintText: 'Email'),
                         validator: (value) {}),
                     TextFormField(
                         controller: _passwordController,
-                        decoration: const InputDecoration(hintText: 'Senha'),
+                        decoration: InputDecoration(hintText: 'Senha'),
                         validator: (value) {}),
                     const SizedBox(
                       height: 20,
@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen()));  // Navega para a tela de cadastro
+                                  builder: (context) => RegisterScreen()));  // Navega para a tela de cadastro
                         },
                         child: const Text("Cadastrar"))
                   ]))),

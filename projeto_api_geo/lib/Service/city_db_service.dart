@@ -1,73 +1,80 @@
-// city_db_service.dart
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
 import '../Model/city_model.dart';
 
 class CityDataBaseService {
-  static const String DB_NAME = 'cities.db';
-  static const String TABLE_NAME = 'cities';
-  static const String CREATE_TABLE_SCRIPT = """
-    CREATE TABLE cities( 
-      cityname TEXT PRIMARY KEY, 
-      favoritecities INTEGER)
-    """;
+  static const String DB_NOME = 'city.db'; // Nome do banco de dados
+  static const String TABLE_NOME = 'cities'; // Nome da tabela
+  static const String CREATE_CONTACTS_TABLE_SCRIPT = // Script SQL para criar a tabela
+      """CREATE TABLE cities(
+        id SERIAL, 
+        cityname TEXT, 
+        historycities BOOLEAN)""";
 
-  Future<Database> _getDatabase() async {
+  Future<Database> _getDatabase() async{
     return openDatabase(
-      join(await getDatabasesPath(), DB_NAME),
+      join(await getDatabasesPath(), DB_NOME), // Caminho do banco de dados
       onCreate: (db, version) {
-        return db.execute(CREATE_TABLE_SCRIPT);
+        return db.execute(
+            CREATE_CONTACTS_TABLE_SCRIPT); // Executa o script de criação da tabela quando o banco é criado
       },
       version: 1,
     );
   }
 
-  Future<List<Map<String, dynamic>>> getAllCities() async {
+ Future<List<City>> getAllCities() async {
+  Database db = await _getDatabase();
+  List<Map<String, dynamic>> maps = await db.query(TABLE_NOME);
+  return List.generate(
+    maps.length,
+    (i) {
+      return City(
+        cityName: maps[i]['cityname'],
+        historyCities: maps[i]['historycities'] == 1, // Convertendo de int para bool
+      );
+    },
+  );
+}
+
+
+  Future<int> insertCity(City city) async {
     try {
       Database db = await _getDatabase();
-      List<Map<String, dynamic>> maps = await db.query(TABLE_NAME);
-      await db.close();
-      return maps;
+      print("banco");
+      return await db.insert(TABLE_NOME, city.toMap());
     } catch (e) {
       print(e);
-      return [];
+      return 0;
     }
+      }  
+      //update
+Future<void> updateCity(City city) async {
+  try {
+    Database db = await _getDatabase();
+    int isHistoryInt = city.historyCities ? 1 : 0; // Convertendo bool para int
+    await db.update(
+      TABLE_NOME,
+      {'historycities': isHistoryInt},
+      where: 'cityname = ?',
+      whereArgs: [city.cityName],
+    );
+  } catch (e) {
+    print(e);
   }
+}
 
-  Future<void> insertCity(City city) async {
+  Future<void> historyCity(String cityName, bool isHistory) async {
     try {
       Database db = await _getDatabase();
-      await db.insert(TABLE_NAME, city.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-      await db.close();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> deleteCity(String cityName) async {
-    try {
-      Database db = await _getDatabase();
-      await db.delete(TABLE_NAME, where: 'cityname = ?', whereArgs: [cityName]);
-      await db.close();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<bool> isCityFavorite(String cityName) async {
-    try {
-      Database db = await _getDatabase();
-      List<Map<String, dynamic>> maps = await db.query(
-        TABLE_NAME,
-        where: 'cityname = ? AND favoritecities = 1',
+      await db.update(
+        TABLE_NOME,
+        {'historycities': isHistory ? 1 : 0},
+        where: 'cityname = ?',
         whereArgs: [cityName],
       );
-      await db.close();
-      return maps.isNotEmpty;
     } catch (e) {
       print(e);
-      return false;
     }
   }
 }
