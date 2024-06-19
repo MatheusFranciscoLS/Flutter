@@ -39,6 +39,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   final city = sortedCities[index];
                   return ListTile(
                     title: Text(city.cityName),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _dbService.removeCityFromHistory(city.cityName);
+                        setState(() {}); // Atualiza a tela após a remoção
+                      },
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,

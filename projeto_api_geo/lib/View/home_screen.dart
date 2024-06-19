@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _getWeatherInit();
   }
 
-  Future <void> _getWeatherInit() async {
+  Future<void> _getWeatherInit() async {
     try {
       Position position = await Geolocator.getCurrentPosition();
       _controller.getWeatherByLocation(position.latitude, position.longitude);
@@ -36,62 +36,55 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text("Previsão do Tempo"),
         centerTitle: true,
         backgroundColor: Colors.blue,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.pushNamed(context, '/search');
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () {
+              Navigator.pushNamed(context, '/history');
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/search');
-                  }, 
-                  child: const Text("Procurar")
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/history');
-                  }, 
-                  child: const Text("Histórico")
-                ),ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/favorites');
-                  }, 
-                  child: const Text("Favoritos")
-                ),
-              ],
-            ),
             const SizedBox(height: 20),
             _controller.weatherList.isEmpty
-            ? Row(
-                children: [
-                  const Text("Erro de Conexão"),
-                  IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () {
-                      _getWeatherInit();
-                    },
+                ? Row(
+                    children: [
+                      const Text("Erro de Conexão"),
+                      IconButton(
+                        icon: const Icon(Icons.refresh),
+                        onPressed: () {
+                          _getWeatherInit();
+                        },
+                      )
+                    ],
                   )
-                ],
-              )
-            : Column(
-                children: [
-                  Text(_controller.weatherList.last.name),
-                  const SizedBox(height: 10),
-                  Text(_controller.translateMain(_controller.weatherList.last.main)),
-                  const SizedBox(height: 10),
-                  Text(_controller.translateDescription(_controller.weatherList.last.description)), // Aqui chamamos o método de tradução
-                  const SizedBox(height: 10),
-                  Text((_controller.weatherList.last.temp - 273).toStringAsFixed(2)),
-                  IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () {
-                      _getWeatherInit();
-                    },
+                : Column(
+                    children: [
+                      Text(_controller.weatherList.last.name),
+                      const SizedBox(height: 10),
+                      Text(_controller.translateMain(_controller.weatherList.last.main)),
+                      const SizedBox(height: 10),
+                      Text(_controller.translateDescription(_controller.weatherList.last.description)), // Aqui chamamos o método de tradução
+                      const SizedBox(height: 10),
+                      Text((_controller.weatherList.last.temp - 273).toStringAsFixed(2)),
+                      IconButton(
+                        icon: const Icon(Icons.refresh),
+                        onPressed: () {
+                          _getWeatherInit();
+                        },
+                      )
+                    ],
                   )
-                ],
-              )
           ],
         ),
       ),

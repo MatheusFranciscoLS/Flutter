@@ -88,41 +88,40 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-Future<void> _findCity(String city) async {
-  if (await _controller.findCity(city)) {
-    List<City> cities = await _dbService.getAllCities();
-    bool cityExists = cities.any((c) => c.cityName == city && c.historyCities);
-    if (!cityExists) {
-      City cidade = City(cityName: city, historyCities: true);
-      await _dbService.insertCity(cidade);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Cidade encontrada e adicionada ao histórico!"),
-          duration: Duration(seconds: 1),
+  Future<void> _findCity(String city) async {
+    if (await _controller.findCity(city)) {
+      // Adiciona a cidade aos historico apenas se ainda não estiver na lista
+      List<City> cities = await _dbService.getAllCities();
+      if (!cities.any((c) => c.cityName == city && c.historyCities)) {
+        City cidade = City(cityName: city, historyCities: true);
+        await _dbService.insertCity(cidade);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Cidade encontrada e adicionada aos historico!"),
+            duration: Duration(seconds: 1),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Cidade inserida no historico!"),
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => DetailsWeatherScreen(city: city),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Cidade já está no histórico!"),
-          duration: Duration(seconds: 1),
+          content: Text("Cidade não encontrada!"),
+          duration: Duration(seconds: 2),
         ),
       );
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => DetailsWeatherScreen(city: city),
-      ),
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Cidade não encontrada!"),
-        duration: Duration(seconds: 2),
-      ),
-    );
   }
-}
-
 }
