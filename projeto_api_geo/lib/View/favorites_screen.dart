@@ -13,8 +13,7 @@ class FavoritesScreen extends StatefulWidget {
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
   final CityDataBaseService _dbService = CityDataBaseService();
-
-  late List<City> _favoriteCities;
+  late List<City> _favoriteCities = [];
 
   @override
   void initState() {
