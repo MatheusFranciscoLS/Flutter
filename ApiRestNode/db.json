@@ -42,18 +42,34 @@
       "preco": 300
     }
   ],
-  "audios":[
+  "audios": [
     {
-      "id":"1",
-      "title":"The St. Louis Blues",
-      "artist":"W. C. Handy",
-      "url":"http://www.dominiopublico.gov.br/download/som/gu10249.mp3"
+      "id": "1",
+      "title": "Love games",
+      "artist": "Superphones",
+      "url": "http://www.dominiopublico.gov.br/download/som/ea000123.mp3",
+      "imageUrl": "https://images.educamaisbrasil.com.br/content/banco_de_imagens/guia-de-estudo/D/a-noite-estrelada.jpg"
     },
     {
-      "id":"1",
-      "title":"New York Blues",
-      "artist":"Pietro Frosini",
-      "url":"http://www.dominiopublico.gov.br/download/som/gu10287.mp3"
+      "id": "2",
+      "title": "Triplets",
+      "artist": "George Hamilton Green",
+      "url": "http://www.dominiopublico.gov.br/download/som/gu10423.mp3",
+      "imageUrl": "https://arteref.com/wp-content/uploads/2019/04/Water-lilies-by-Claude-Monet.jpg"
+    },
+    {
+      "id": "3",
+      "title": "Oslodum [Creative Commons - Sampling Plus License]",
+      "artist": "Gilberto Gill",
+      "url": "http://www.dominiopublico.gov.br/download/som/Gilberto%20Gil%20-%20Oslodum.mp3",
+      "imageUrl": "https://www.superprof.com.br/blog/wp-content/uploads/2019/10/obras-famosas-brasileiras.jpg"
+    },
+    {
+      "id": "4",
+      "title": "Another Brick in the Wall ",
+      "artist": "Pink Floyd",
+      "url": "https://firebasestorage.googleapis.com/v0/b/teste-firebase-3d7ff.appspot.com/o/pink%20floyd%20-%20another%20brick%20in%20the%20wall.mp3?alt=media&token=a4bb4b2b-5d79-40b1-a747-d60ffcf5c7bb",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl7-0wuLL8iOYmKNf05FPwTLWWRJc7l3pBCg&s"
     }
-  ]
+    ]
 }

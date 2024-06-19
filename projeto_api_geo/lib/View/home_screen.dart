@@ -36,12 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text("Previsão do Tempo"),
         centerTitle: true,
         backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),

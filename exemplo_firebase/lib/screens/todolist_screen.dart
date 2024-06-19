@@ -4,7 +4,7 @@ import 'package:exemplo_firebase/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../controllers/todolist_controller.dart';
+import '../controller/todolist_controller.dart';
 
 class TodolistScreen extends StatefulWidget {
   final User user;
