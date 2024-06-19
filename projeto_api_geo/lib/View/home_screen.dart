@@ -48,6 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               Navigator.pushNamed(context, '/history');
             },
+          ),          IconButton(
+            icon: const Icon(Icons.favorite_sharp),
+            onPressed: () {
+              Navigator.pushNamed(context, '/favorites');
+            },
           ),
         ],
       ),
