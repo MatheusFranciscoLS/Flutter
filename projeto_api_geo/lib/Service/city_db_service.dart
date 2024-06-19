@@ -7,9 +7,8 @@ class CityDataBaseService {
   static const String DB_NOME = 'city.db'; // Nome do banco de dados
   static const String TABLE_NOME = 'cities'; // Nome da tabela
   static const String CREATE_CONTACTS_TABLE_SCRIPT = // Script SQL para criar a tabela
-      """CREATE TABLE cities(
-        id SERIAL, 
-        cityname TEXT, 
+      """CREATE TABLE cities( 
+        cityname PRIMARY KEY, 
         historycities BOOLEAN)""";
 
   Future<Database> _getDatabase() async{
